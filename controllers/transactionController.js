@@ -1,6 +1,7 @@
 const setStatusRenderError = require("../lib/responseHelpers").setStatusRenderError;
 const validDeposit = require("../lib/validations").validDeposit;
 const validWithdrawal = require("../lib/validations").validWithdrawal;
+const helpers = require("../lib/helpers");
 const queries = require("../db/queries");
 const default_account_number = 0;
 
@@ -61,13 +62,16 @@ exports.getTransactions = async (req, res) => {
 
 exports.createDeposit = async (req, res) => {
     validateDeposit(req, res, (deposit) => {
-        let balance = (async function () {
+        const new_deposit = new helpers.Deposit(default_account_number, deposit.amount);
+        
+        const balance = (async function () {
             return await GetBalance();
         })();
+
+        const new_balance = new_deposit.updateBalance(balance);
         balance.then((balance) => {
-            let new_balance = parseFloat(balance) + parseFloat(deposit.amount);
-            let row_inserted = (async function () {
-                return await InsertTransaction(deposit);
+            const row_inserted = (async function () {
+                return await InsertTransaction(new_deposit);
             })();
             row_inserted.then((result) => {
                 queries
@@ -80,22 +84,20 @@ exports.createDeposit = async (req, res) => {
 
 exports.createWithdrawal = async (req, res) => {
     validateWithdrawal(req, res, (withdrawal) => {
-        let balance = (async function () {
+        const new_withdrawal = new helpers.Withdrawal(default_account_number, withdrawal.amount);
+        const balance = (async function () {
             return await GetBalance();
         })();
+        const new_balance = new_withdrawal.updateBalance(balance);
         balance.then((balance) => {
-            if (balance > withdrawal.amount) {
-                let new_balance =
-                    parseFloat(balance) - parseFloat(withdrawal.amount);
-                let row_inserted = (async function () {
-                    return await InsertTransaction(withdrawal);
+               const row_inserted = (async function () {
+                    return await InsertTransaction(new_withdrawal);
                 })();
                 row_inserted.then((result) => {
                     queries
                         .updateBalance(default_account_number, new_balance)
                         .then(res.redirect("/transaction"));
                 });
-            }
         });
     });
 };
