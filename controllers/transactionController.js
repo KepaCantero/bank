@@ -2,9 +2,10 @@ const setStatusRenderError = require("../lib/responseHelpers").setStatusRenderEr
 const validDeposit = require("../lib/validations").validDeposit;
 const validWithdrawal = require("../lib/validations").validWithdrawal;
 const queries = require("../db/queries");
+const default_account_number = 0;
 
 async function GetBalance() {
-    return await queries.getAccount(0).then((account) => {
+    return await queries.getAccount(default_account_number).then((account) => {
         return account.balance;
     });
 }
@@ -18,7 +19,7 @@ async function InsertTransaction(transaction) {
 function validateDeposit(req, res, callback) {
     if (validDeposit(req.body)) {
         const deposit = {
-            customer_id: 0,
+            customer_id: default_account_number,
             amount: req.body.amount,
             type: "deposit",
             date: new Date(),
@@ -32,7 +33,7 @@ function validateDeposit(req, res, callback) {
 function validateWithdrawal(req, res, callback) {
     if (validWithdrawal(req.body)) {
         const withdrawal = {
-            customer_id: 0,
+            customer_id: default_account_number,
             amount: req.body.amount,
             type: "withdrawal",
             date: new Date(),
@@ -43,7 +44,22 @@ function validateWithdrawal(req, res, callback) {
     }
 }
 
-exports.deposit_create_post = async (req, res) => {
+exports.getTransactions = async (req, res) => {
+    const account = (async function() {
+            return await queries.getAccount(default_account_number);
+                    })();
+    account.then(account => {
+        queries.getTransactions(default_account_number)
+            .then(transactions => {
+                res.render('all', {
+                    data: { transactions_: transactions, account_: account
+                }
+        });
+    })
+});
+};
+
+exports.createDeposit = async (req, res) => {
     validateDeposit(req, res, (deposit) => {
         let balance = (async function () {
             return await GetBalance();
@@ -55,14 +71,14 @@ exports.deposit_create_post = async (req, res) => {
             })();
             row_inserted.then((result) => {
                 queries
-                    .updateBalance(0, new_balance)
+                    .updateBalance(default_account_number, new_balance)
                     .then(res.redirect("/transaction"));
             })
         });
     });
 };
 
-exports.withdrawal_create_post = async (req, res) => {
+exports.createWithdrawal = async (req, res) => {
     validateWithdrawal(req, res, (withdrawal) => {
         let balance = (async function () {
             return await GetBalance();
@@ -76,7 +92,7 @@ exports.withdrawal_create_post = async (req, res) => {
                 })();
                 row_inserted.then((result) => {
                     queries
-                        .updateBalance(0, new_balance)
+                        .updateBalance(default_account_number, new_balance)
                         .then(res.redirect("/transaction"));
                 });
             }

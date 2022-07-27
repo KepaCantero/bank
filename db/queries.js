@@ -27,4 +27,12 @@ module.exports = {
                 console.error(error);
             });
     },
+    getTransactions: (id) => {
+        return knex("transaction")
+            .select()
+            .where("customer_id", id)
+            .catch(function (error) {
+                console.error(error);
+            });
+    },
 };
