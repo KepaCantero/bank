@@ -7,9 +7,9 @@
     .then(function () {
       const customers = [{
         customer_id: 0,
-        name: 'Kepa Cantero',
-        address: 'Am GottersackerWeg',
-        balance: 100,
+        name: 'John Doe',
+        address: 'Bilbao',
+        balance: 0,
       }];
 
       return knex('customer').insert(customers);

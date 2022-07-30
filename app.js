@@ -3,11 +3,9 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var bankAPI = require('./api/bankAPI');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var transactionRouter = require('./routes/transaction');
-
 var app = express();
 
 // view engine setup
@@ -20,11 +18,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/transaction', transactionRouter);
+app.use('/', transactionRouter);
+app.use('/api/v1/bank', bankAPI);
 
-// catch 404 and forward to error handler
+
+// catch 404 and forward to error handlers
 app.use(function(req, res, next) {
   next(createError(404));
 });
@@ -37,7 +35,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('errors');
 });
 
 module.exports = app;

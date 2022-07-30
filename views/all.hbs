@@ -6,7 +6,7 @@
     <tr>
       <th scope="col">Date</th>
       <th scope="col">Amount</th>
-      <th scope="col">Type</th>
+      <th scope="col">balance</th>
     </tr>
   </thead>
  <tbody>
@@ -14,15 +14,15 @@
     <tr>
       <td>{{date}} </td>
       <td>{{amount}} </td>
-      <td>{{type}}</td>
+      <td>{{balance}}</td>
     </tr>
     {{/each}}
     </tbody>
 </table>
 
-<a type="button" class="btn btn-default btn-primary" href="/transaction/deposit">
+<a type="button" class="btn btn-default btn-primary" href="/deposit">
   Deposit money
 </a>
-<a type="button" class="btn btn-default btn-primary" href="/transaction/withdrawal">
+<a type="button" class="btn btn-default btn-primary" href="/withdrawal">
   Withdrawal money
 </a>
