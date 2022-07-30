@@ -35,4 +35,19 @@ module.exports = {
                 console.error(error);
             });
     },
+    getHistorical: (id) => {
+        return knex("historical_transaction")
+            .select()
+            .where("customer_id", id)
+            .catch(function (error) {
+                console.error(error);
+            });
+    },
+    insertHistorical: (historical) => {
+        return knex("historical_transaction")
+            .insert(historical, "*")
+            .catch(function (error) {
+                console.error(error);
+            });
+    },
 };
