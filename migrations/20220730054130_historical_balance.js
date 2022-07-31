@@ -2,14 +2,14 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.up = function(knex) {
-    return knex.schema.createTable('historical_transaction', (table)=>{
+ exports.up = function(knex) {
+    return knex.schema.createTable('historical_transaction', (table) => {
         table.increments();
         table.integer('customer_id').notNullable();
         table.integer('amount').notNullable();
         table.dateTime('date').notNullable();
         table.integer('balance').notNullable();
-      })
+    })
 };
 
 /**
@@ -17,5 +17,5 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-    return knex.schema.dropTable('historical_transaction'); 
+    return knex.schema.dropTable('historical_transaction');
 };
