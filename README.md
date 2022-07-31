@@ -1,7 +1,7 @@
 # DEMO BANK transaction application
 
 ## Features
-- THe user can deposit and withdrawal money
+- The user can deposit and withdrawal money
 - The user can check the list of transactions. 
 
 ## Acceptance criteria
@@ -22,10 +22,10 @@
     createdb bank
     knex init
     knex migrate:latest
-    knex seed:run```
+    knex seed:run
 - Run the application: 
      ```sh
-    node ./bin/www```
+    node ./bin/www
 ## Tech
 
 - [Express] - fast node.js network app framework

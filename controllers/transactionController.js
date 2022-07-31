@@ -14,11 +14,8 @@ exports.getTransactions = async (req, res) => {
         queries.getHistorical(constants.default_account_number)
             .then(transactions => {
                 transactions.forEach(function(item, index) {
-                    var dateObj = new Date(item.date)
-                    var month = dateObj.getUTCMonth() + 1
-                    var day = dateObj.getUTCDate()
-                    var year = dateObj.getUTCFullYear()
-                    transactions[index].date = day + "/" + month + "/" + year
+
+                    transactions[index].date = helpers.formatDate(transactions[index].date);
                 })
                 res.render('all', {
                     data: {
@@ -49,7 +46,6 @@ exports.createDeposit = async (req, res) => {
                     .then((result) => {
 
                         const historical_transaction = new helpers.Historical(new_deposit.customer_id, new_deposit.amount, new_deposit.date, new_deposit.type, new_balance);
-                        console.log("historical_transaction", historical_transaction);
                         queries
                             .insertHistorical(historical_transaction)
                             .then(res.redirect("/"));
@@ -67,7 +63,6 @@ exports.createWithdrawal = async (req, res) => {
         const balance = (async function() {
             return await queries.getBalanceAsync();
         })();
-
 
         balance.then((balance) => {
             switch(new_withdrawal.ValidateWithdrawal(balance)) {
