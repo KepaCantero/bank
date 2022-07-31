@@ -1,4 +1,4 @@
-# BANK application
+# DEMO BANK transaction application
 
 ## Features
 - THe user can deposit and withdrawal money
@@ -7,13 +7,19 @@
 ## Acceptance criteria
 - The operations list transaction, create withdrawal and create deposite can be perform through the browser. 
 - API will be provided for
+- Nice to have:
+    - Idempotent feature. 
+    -   REST API
+    -   HTTPS
+    - Docker container
 
 ## Installation
 - Download the repo
-- npm install
 - Create the DB: createdb bank
 - Migrate and seed the DB using knex:
     ```sh
+    npm install
+    createdb bank
     knex init
     knex migrate:latest
     knex seed:run```
@@ -28,3 +34,5 @@
 - [PostgreSQL] - database
 - [node.js] - evented I/O for the backend
 
+## Demo
+https://www.youtube.com/watch?v=hiZylTDHslw&ab_channel=KepaCantero
