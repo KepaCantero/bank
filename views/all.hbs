@@ -1,28 +1,27 @@
 <div class="p-3 text-left bg-light">
-  <h5 class="mb-4">{{data.account_.name}} balance: {{data.account_.balance}}</h5>
+   <h5 class="mb-4">{{data.account_.name}} balance: {{data.account_.balance}}</h5>
 </div>
 <table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">Date</th>
-      <th scope="col">Amount</th>
-      <th scope="col">balance</th>
-    </tr>
-  </thead>
- <tbody>
-    {{#each data.transactions_}}
-    <tr>
-      <td>{{date}} </td>
-      <td>{{amount}} </td>
-      <td>{{balance}}</td>
-    </tr>
-    {{/each}}
-    </tbody>
+   <thead>
+      <tr>
+         <th scope="col">Date</th>
+         <th scope="col">Amount</th>
+         <th scope="col">balance</th>
+      </tr>
+   </thead>
+   <tbody>
+      {{#each data.transactions_}}
+      <tr>
+         <td>{{date}} </td>
+         <td>{{amount}} </td>
+         <td>{{balance}}</td>
+      </tr>
+      {{/each}}
+   </tbody>
 </table>
-
 <a type="button" class="btn btn-default btn-primary" href="/deposit">
-  Deposit money
+Deposit money
 </a>
 <a type="button" class="btn btn-default btn-primary" href="/withdrawal">
-  Withdrawal money
+Withdrawal money
 </a>
